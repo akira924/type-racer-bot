@@ -1,27 +1,23 @@
 /**
- * Extract text from the page. Customize selectors for your target site.
+ * Extract passage text from the element immediately before #smoothCaret.
  */
 function extractPageText() {
-  // TypeRacer: the passage to type lives in .input .txtInput (or similar)
-  const typeracerPassage = document.querySelector(".input .txtInput");
-  if (typeracerPassage) {
-    return {
-      source: "typeracer",
-      text: typeracerPassage.textContent.trim(),
-    };
+  const caret = document.getElementById("smoothCaret");
+  if (!caret) {
+    return { text: null, error: "#smoothCaret not found on this page." };
   }
 
-  // Generic fallback: visible text from main content areas
-  const main =
-    document.querySelector("main") ||
-    document.querySelector("article") ||
-    document.querySelector('[role="main"]') ||
-    document.body;
+  const passage = caret.previousElementSibling;
+  if (!passage) {
+    return { text: null, error: "No text element found above #smoothCaret." };
+  }
 
-  return {
-    source: "generic",
-    text: main.innerText.trim(),
-  };
+  const text = passage.textContent.trim();
+  if (!text) {
+    return { text: null, error: "Text element above #smoothCaret is empty." };
+  }
+
+  return { text };
 }
 
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {

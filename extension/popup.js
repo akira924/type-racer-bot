@@ -13,11 +13,11 @@ extractBtn.addEventListener("click", async () => {
     const response = await chrome.tabs.sendMessage(tab.id, { type: "GET_PAGE_TEXT" });
     if (!response?.text) {
       output.value = "";
-      meta.textContent = "No text found. Check selectors in content.js.";
+      meta.textContent = response?.error ?? "No text found on this page.";
       return;
     }
     output.value = response.text;
-    meta.textContent = `Source: ${response.source} · ${response.text.length} characters`;
+    meta.textContent = `${response.text.length} characters`;
   } catch (err) {
     output.value = "";
     meta.textContent =
