@@ -7,7 +7,7 @@ const meta = document.getElementById("meta");
 function clampWpm(value) {
   const n = Number.parseInt(value, 10);
   if (Number.isNaN(n)) return 100;
-  return Math.min(200, Math.max(50, n));
+  return Math.min(1000, Math.max(50, n));
 }
 
 extractBtn.addEventListener("click", async () => {
